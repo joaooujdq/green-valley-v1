@@ -2,7 +2,9 @@ package br.com.jmts.model;
 
 import jakarta.persistence.*;
 
+
 import java.io.Serializable;
+
 
 @Entity
 @Table(name = "person")
@@ -12,6 +14,7 @@ public class Person implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "first_name", nullable = false, length = 80)
@@ -20,13 +23,20 @@ public class Person implements Serializable {
     @Column(name = "last_name", nullable = false, length = 80)
     private String lastName;
 
-    @Column(nullable = false, length = 100)
+    @Column(name = "address", nullable = false, length = 100)
     private String address;
 
-    @Column(nullable = false, length = 6)
+    @Column(name = "gender", nullable = false, length = 50)
     private String gender;
 
     public Person() {}
+
+    public Person(String firstName, String lastName, String address, String gender) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.gender = gender;
+    }
 
     public Long getId() {
         return id;

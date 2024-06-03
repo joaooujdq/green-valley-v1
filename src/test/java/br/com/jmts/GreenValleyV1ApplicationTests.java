@@ -1,4 +1,4 @@
-package br.com.jmts.green_valley_v1;
+package br.com.jmts;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
