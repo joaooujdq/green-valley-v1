@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import br.com.jmts.controllers.PersonController;
+import br.com.jmts.exceptions.RequiredObjectIsNullException;
 import br.com.jmts.repositories.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -50,7 +51,7 @@ public class PersonServices {
     }
 
     public PersonVO create(PersonVO person) {
-
+        if(person == null) throw new RequiredObjectIsNullException();
         logger.info("Creating one person!");
         var entity = Mapper.parseObject(person, Person.class);
         PersonVO vo = Mapper.parseObject(repository.save(entity), PersonVO.class);
@@ -59,6 +60,8 @@ public class PersonServices {
     }
 
     public PersonVO update(PersonVO person) {
+
+        if(person == null) throw new RequiredObjectIsNullException();
 
         logger.info("Updating one person!");
 

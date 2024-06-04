@@ -2,7 +2,7 @@ package br.com.jmts.unittests.mapper;
 
 import br.com.jmts.data.vo.v1.PersonVO;
 import br.com.jmts.mapper.Mapper;
-import br.com.jmts.model.MockPerson;
+import br.com.jmts.unittests.mapper.mocks.MockPerson;
 import br.com.jmts.model.Person;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -95,4 +95,5 @@ class MapperTest {
         assertEquals("Last Name Test12", outputTwelve.getLastName());
         assertEquals("Addres Test12", outputTwelve.getAddress());
         assertEquals("Male", outputTwelve.getGender());
+    }
 }

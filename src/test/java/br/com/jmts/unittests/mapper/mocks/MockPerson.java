@@ -1,13 +1,10 @@
-package br.com.jmts.model;
+package br.com.jmts.unittests.mapper.mocks;
 
 import br.com.jmts.data.vo.v1.PersonVO;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import br.com.jmts.model.Person;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class MockPerson {
 
