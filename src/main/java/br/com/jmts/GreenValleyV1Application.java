@@ -7,10 +7,14 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.password.Pbkdf2PasswordEncoder;
 
 
 import java.util.Arrays;
-
+import java.util.HashMap;
+import java.util.Map;
 
 
 @EnableAutoConfiguration
@@ -29,6 +33,24 @@ public class GreenValleyV1Application implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws  Exception{
+
+
+
+
+		Map<String, PasswordEncoder> encoders = new HashMap<>();
+
+		encoders.put("pbkdf2", new Pbkdf2PasswordEncoder("", 8, 185000, Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256));
+
+		DelegatingPasswordEncoder passwordEncoder = new DelegatingPasswordEncoder("pbkdf2", encoders);
+
+		passwordEncoder.setDefaultPasswordEncoderForMatches(new Pbkdf2PasswordEncoder("", 8, 185000, Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256));
+
+
+
+		String result = passwordEncoder.encode("admin123");
+
+		System.out.println("My hash " + result);
+
 		/*
 
 		Pbkdf2PasswordEncoder pbkdf2Encoder =

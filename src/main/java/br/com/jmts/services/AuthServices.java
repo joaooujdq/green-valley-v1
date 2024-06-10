@@ -25,14 +25,17 @@ public class AuthServices {
 
     public ResponseEntity signin(AccountCredentialsVO data){
         try {
+            System.out.println("data" + data.getUsername() + data.getPassword());
             var username = data.getUsername();
             var password = data.getPassword();
+            System.out.println("000000000000000000"  );
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password));
-
+            System.out.println("000000000000000000"  );
             var user = repository.findByUsername(username);
 
             var tokenResponse = new TokenVO();
+
             if(user != null){
                 tokenResponse = tokenProvider.createAccessToken(username, user.getRoles());
 
@@ -41,6 +44,7 @@ public class AuthServices {
             }
             return ResponseEntity.ok(tokenResponse);
         }catch (Exception e){
+            System.out.println("1111111111111111"  );
             throw new BadCredentialsException("Invalid username/password supplied!");
         }
     }
@@ -48,6 +52,7 @@ public class AuthServices {
     public ResponseEntity refreshToken(String username, String refreshToken){
         var user = repository.findByUsername(username);
         var tokenResponse = new TokenVO();
+        System.out.println("refresh token" + refreshToken );
         if(user != null){
             tokenResponse = tokenProvider.refreshToken(refreshToken);
 

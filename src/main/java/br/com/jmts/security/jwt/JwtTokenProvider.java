@@ -2,6 +2,8 @@ package br.com.jmts.security.jwt;
 
 import br.com.jmts.data.vo.v1.TokenVO;
 import br.com.jmts.exceptions.InvalidJwtAuthenticationException;
+import br.com.jmts.services.PersonServices;
+import ch.qos.logback.core.net.SyslogOutputStream;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -20,10 +22,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Logger;
 
 
 @Service
 public class JwtTokenProvider {
+
+
+
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey = "secret";
 
@@ -74,6 +80,8 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token){
         DecodedJWT decodedJWT = decodedToken(token);
+
+
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(decodedJWT.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
@@ -85,14 +93,17 @@ public class JwtTokenProvider {
         return decodedJWT;
     }
     public String resolveToken(HttpServletRequest req){
+        System.out.println("teste3333333");
         String bearerToken = req.getHeader("Authorization");
+        System.out.println("bearer string" + bearerToken );
         if(bearerToken != null && bearerToken.startsWith("Bearer ")){
             return bearerToken.substring("Bearer ".length());
         }
         return null;
     }
 
-    public boolean validateToken(String token) throws InvalidJwtAuthenticationException {
+    public boolean validateToken(String token) {
+        System.out.println("refresh token2" );
         DecodedJWT decodedJWT = decodedToken(token);
         try{
                 if (decodedJWT.getExpiresAt().before(new Date())){
