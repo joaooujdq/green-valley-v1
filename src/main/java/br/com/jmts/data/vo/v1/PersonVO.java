@@ -8,17 +8,15 @@ import org.springframework.web.bind.annotation.Mapping;
 import java.io.Serializable;
 import java.util.Objects;
 
-@JsonPropertyOrder({"id", "firstName", "lastName", "address", "gender"})
+
 public class PersonVO extends RepresentationModel<PersonVO> implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	@JsonProperty("id")
+
 	private Long key;
 
-	@JsonProperty("first_name")
 	private String firstName;
-	@JsonProperty("last_name")
 	private String lastName;
 	private String address;
 	private String gender;

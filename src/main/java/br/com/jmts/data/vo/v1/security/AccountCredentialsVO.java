@@ -1,4 +1,4 @@
-package br.com.jmts.data.vo.v1;
+package br.com.jmts.data.vo.v1.security;
 
 import java.io.Serializable;
 import java.util.Objects;

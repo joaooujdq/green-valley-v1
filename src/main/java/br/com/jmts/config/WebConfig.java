@@ -1,6 +1,7 @@
 package br.com.jmts.config;
 
-import br.com.jmts.serialization.converter.YamlJackson2HttpMesageConverter;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -9,13 +10,12 @@ import org.springframework.web.servlet.config.annotation.ContentNegotiationConfi
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import java.util.List;
+import br.com.jmts.serialization.converter.YamlJackson2HttpMesageConverter;
 
 @Configuration
-public class WebConfig implements WebMvcConfigurer {
+public class WebConfig implements WebMvcConfigurer{
 
-    private static final MediaType MEDIA_TYPE_APPLICATION_YAML = MediaType.valueOf("application/x-yaml");
-
+    private static final MediaType MEDIA_TYPE_APPLICATION_YML = MediaType.valueOf("application/x-yaml");
 
     @Value("${cors.originPatterns:default}")
     private String corsOriginPatterns = "";
@@ -26,7 +26,7 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
     @Override
-    public void addCorsMappings(CorsRegistry registry){
+    public void addCorsMappings(CorsRegistry registry) {
         var allowedOrigins = corsOriginPatterns.split(",");
         registry.addMapping("/**")
                 //.allowedMethods("GET", "POST", "PUT")
@@ -37,25 +37,29 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
+        // https://www.baeldung.com/spring-mvc-content-negotiation-json-xml
+        // Via EXTENSION. http://localhost:8080/api/person/v1.xml DEPRECATED on SpringBoot 2.6
 
+        // Via QUERY PARAM. http://localhost:8080/api/person/v1?mediaType=xml
+		/*
+		configurer.favorParameter(true)
+			.parameterName("mediaType").ignoreAcceptHeader(true)
+			.useRegisteredExtensionsOnly(false)
+			.defaultContentType(MediaType.APPLICATION_JSON)
+				.mediaType("json", MediaType.APPLICATION_JSON)
+				.mediaType("xml", MediaType.APPLICATION_XML);
+		*/
 
-        /*
-       Content Negotiation define quais formatos de responses são aceitos pela aplicação, por exemplo,
-       xml, csv, json. E tambem define onde são declarados os parametros das requisições, no Header ou na Query.
+        // Via HEADER PARAM. http://localhost:8080/api/person/v1
 
-       Via Query:
-
-       configurer.favorParameter(true).parameterName("mediaType").ignoreAcceptHeader(true)
-                .useRegisteredExtensionsOnly(false).defaultContentType(MediaType.APPLICATION_JSON)
+        configurer.favorParameter(false)
+                .ignoreAcceptHeader(false)
+                .useRegisteredExtensionsOnly(false)
+                .defaultContentType(MediaType.APPLICATION_JSON)
                 .mediaType("json", MediaType.APPLICATION_JSON)
-                .mediaType("xml", MediaType.APPLICATION_XML);
-
-       Via Header:                                                 */
-
-       configurer.favorParameter(false).ignoreAcceptHeader(false)
-               .useRegisteredExtensionsOnly(false).defaultContentType(MediaType.APPLICATION_JSON)
-               .mediaType("json", MediaType.APPLICATION_JSON)
-               .mediaType("xml", MediaType.APPLICATION_XML)
-               .mediaType("x-yaml", MEDIA_TYPE_APPLICATION_YAML);
+                .mediaType("xml", MediaType.APPLICATION_XML)
+                .mediaType("x-yaml", MEDIA_TYPE_APPLICATION_YML)
+        ;
     }
+
 }

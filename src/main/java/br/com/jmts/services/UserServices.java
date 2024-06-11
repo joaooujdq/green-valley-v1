@@ -28,6 +28,10 @@ public class UserServices implements UserDetailsService {
     @Autowired
     UserRepository repository;
 
+    public UserServices(UserRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("Finding one user by name" + username + "!");
@@ -42,7 +46,5 @@ public class UserServices implements UserDetailsService {
         }
     }
 
-    public UserServices(UserRepository repository) {
-        this.repository = repository;
-    }
+
 }

@@ -1,7 +1,7 @@
 package br.com.jmts.services;
 
-import br.com.jmts.data.vo.v1.AccountCredentialsVO;
-import br.com.jmts.data.vo.v1.TokenVO;
+import br.com.jmts.data.vo.v1.security.AccountCredentialsVO;
+import br.com.jmts.data.vo.v1.security.TokenVO;
 import br.com.jmts.repositories.UserRepository;
 import br.com.jmts.security.jwt.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +23,13 @@ public class AuthServices {
     @Autowired
     private UserRepository repository;
 
+    @SuppressWarnings("rawtypes")
     public ResponseEntity signin(AccountCredentialsVO data){
         try {
             System.out.println("data" + data.getUsername() + data.getPassword());
             var username = data.getUsername();
             var password = data.getPassword();
-            System.out.println("000000000000000000"  );
+           // System.out.println("000000000000000000"  );
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password));
             System.out.println("000000000000000000"  );
@@ -49,6 +50,7 @@ public class AuthServices {
         }
     }
 
+    @SuppressWarnings("rawtypes")
     public ResponseEntity refreshToken(String username, String refreshToken){
         var user = repository.findByUsername(username);
         var tokenResponse = new TokenVO();

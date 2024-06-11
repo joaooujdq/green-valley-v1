@@ -19,7 +19,7 @@ import java.util.Map;
 
 @EnableAutoConfiguration
 @SpringBootApplication
-public class GreenValleyV1Application implements CommandLineRunner{
+public class GreenValleyV1Application {
 
 
 
@@ -29,27 +29,6 @@ public class GreenValleyV1Application implements CommandLineRunner{
 	public static void main(String[] args) {
 		SpringApplication.run(GreenValleyV1Application.class, args);
 	}
-
-
-	@Override
-	public void run(String... args) throws  Exception{
-
-
-
-
-		Map<String, PasswordEncoder> encoders = new HashMap<>();
-
-		encoders.put("pbkdf2", new Pbkdf2PasswordEncoder("", 8, 185000, Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256));
-
-		DelegatingPasswordEncoder passwordEncoder = new DelegatingPasswordEncoder("pbkdf2", encoders);
-
-		passwordEncoder.setDefaultPasswordEncoderForMatches(new Pbkdf2PasswordEncoder("", 8, 185000, Pbkdf2PasswordEncoder.SecretKeyFactoryAlgorithm.PBKDF2WithHmacSHA256));
-
-
-
-		String result = passwordEncoder.encode("admin123");
-
-		System.out.println("My hash " + result);
 
 		/*
 
@@ -77,4 +56,4 @@ public class GreenValleyV1Application implements CommandLineRunner{
 	}
 
 
-}
+

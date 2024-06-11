@@ -1,9 +1,7 @@
 package br.com.jmts.security.jwt;
 
-import br.com.jmts.data.vo.v1.TokenVO;
+import br.com.jmts.data.vo.v1.security.TokenVO;
 import br.com.jmts.exceptions.InvalidJwtAuthenticationException;
-import br.com.jmts.services.PersonServices;
-import ch.qos.logback.core.net.SyslogOutputStream;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -22,7 +20,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 
 @Service
@@ -33,7 +30,7 @@ public class JwtTokenProvider {
     @Value("${security.jwt.token.secret-key:secret}")
     private String secretKey = "secret";
 
-    @Value("${security.jwt.token.expire.length:3600000}")
+    @Value("${security.jwt.token.expire-length:3600000}")
     private long validityInMilliseconds = 3600000; //1h
 
     @Autowired
@@ -57,6 +54,7 @@ public class JwtTokenProvider {
 
     public TokenVO refreshToken(String refreshToken){
         if(refreshToken.contains("Bearer ")) refreshToken = refreshToken.substring("Bearer ".length());
+
         JWTVerifier verifier = JWT.require(algorithm).build();
         DecodedJWT decodedJWT = verifier.verify(refreshToken);
         String username = decodedJWT.getSubject();
@@ -80,8 +78,6 @@ public class JwtTokenProvider {
 
     public Authentication getAuthentication(String token){
         DecodedJWT decodedJWT = decodedToken(token);
-
-
         UserDetails userDetails = this.userDetailsService.loadUserByUsername(decodedJWT.getSubject());
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
     }
